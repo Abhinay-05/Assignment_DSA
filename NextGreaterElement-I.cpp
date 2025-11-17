@@ -16,13 +16,10 @@ vector<int> nextGreaterElement(vector<int>& sub, vector<int>& arr ) {
             }
 
             if(!st.empty()){
+                //stack is not empty
                 map[arr[i]] = st.top();
-                st.push(arr[i]);
-            }
-            else{
-                // stack is empty
-                st.push(arr[i]);
-            }
+            }    
+            st.push(arr[i]);
         }
         for(int i = 0 ; i < m ; i++){
             sub[i] = map[sub[i]];
