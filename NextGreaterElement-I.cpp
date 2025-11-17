@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+// only works on non-repeating elements
 // find greatest element on the right which is greater than the current element
 vector<int> nextGreaterElement(vector<int>& sub, vector<int>& arr ) {
         unordered_map<int, int> map;
