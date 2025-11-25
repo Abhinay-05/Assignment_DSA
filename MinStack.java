@@ -1,37 +1,45 @@
 class MinStack {
-    List<Integer> list;
-    private int top = -1;
-    private Stack<Integer> st;
+    class Node{
+        int data;
+        int min;
+        Node next;
 
+        private Node(int val, int min){
+            this.data = val;
+            this.min = min;
+            this.next = null;
+        }
+
+        private Node(int val, int min, Node n){
+            this.data = val;
+            this.min = min;
+            this.next = n;
+        }
+    }
+    Node head;
     public MinStack() {
-        list = new ArrayList<>();
-        st = new Stack<>();
+        head = null;
     }
     
     public void push(int val) {
-        list.add(val);
-        top++;
-        if(st.isEmpty()){
-            st.push(val);
+        if(head == null){
+            head = new Node(val, val);
             return;
         }
-        st.push(st.peek() < val ? st.peek() : val);
-        // adding everytime ensures that the minimum of every length is added
+        Node node = new Node(val, (head.min < val) ? head.min : val, head);
+        head = node;
     }
     
     public void pop() {
-        top--;
-        list.removeLast();
-        st.pop();
+        head = head.next;
     }
     
     public int top() {
-        return list.get(top);
+        return head.data;
     }
     
     public int getMin() {
-        int len = list.size();
-        return st.peek();
+        return head.min;
     }
 }
 
