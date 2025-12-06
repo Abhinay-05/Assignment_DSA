@@ -2,27 +2,29 @@ import java.util.Arrays;
 
 public class sortColours {
     static void sortColors(int[] nums) {
-        int[] count = new int[3];
+        // Dutch Flag Algorithm
+        int low = 0, mid = 0, high = nums.length - 1;
 
-        for(int el : nums){
-            count[el]++;
-        }
-
-        count[1] += count[0];
-        count[2] += count[1];
-
-        int i = 0;
-        while(i < count[0]){
-            nums[i] = 0;
-            i++;
-        }
-        while(i < count[1]){
-            nums[i] = 1;
-            i++;
-        }
-        while(i < count[2]){
-            nums[i] = 2;
-            i++;
+        while(mid <= high){// if < is used instead of <=, then it will miss some 
+            if(nums[mid] == 0){
+                // if nums[mid] == 0
+                int temp = nums[low];
+                nums[low] = nums[mid];
+                nums[mid] = temp;
+                low++;
+                mid++;
+            }
+            else if(nums[mid] == 2){
+                // if nums[mid] == 2
+                int temp = nums[high];
+                nums[high] = nums[mid];
+                nums[mid] = temp;
+                high--;
+            }
+            else{
+                // if nums[mid] == 1
+                mid++;
+            }
         }
     }  
 
