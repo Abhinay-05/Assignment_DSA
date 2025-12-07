@@ -1,32 +1,26 @@
 import java.util.*;
 
 public class mergeSortedArrays {
+    //TC: O(N)
+    //SC: O(1)
     static void merge(int[] nums1, int m, int[] nums2, int n) {
-        int[] ans = new int[m+n];
-        int i = 0, j = 0;
-        int indx = 0;
-        while(i < m && j < n){
-            if(nums1[i] <= nums2[j]){
-                ans[indx++] = nums1[i++];
+        // start from back
+        int i = m-1;//first array
+        int j = n-1;//second array
+        int indx = nums1.length-1;//element placement counter
+        while( i != (-1) && j != (-1)){
+            if(nums2[j] >= nums1[i]){//if second array has larger or equal element 
+                nums1[indx--] = nums2[j--];
             }
-            else{
-                ans[indx++] = nums2[j++];
+            else{//if first array has smaller element
+                nums1[indx--] = nums1[i--];
             }
-        }
-        if(i < m){
-            while(i < m){
-                ans[indx++] = nums1[i++];
-            }
-        }
-        else{
-            while(j < n){
-            ans[indx++] = nums2[j++]; 
-        }
         }
 
-        for(i = 0 ; i < m+n ; i++){
-            nums1[i] = ans[i];
+        while(j != (-1)){//if the second array still has some elements left
+            nums1[indx--] = nums2[j--];
         }
+        
     }
 
     public static void main(String[] args) {
