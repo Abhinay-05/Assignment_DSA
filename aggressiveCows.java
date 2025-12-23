@@ -8,11 +8,10 @@ public class aggressiveCows {
         // SC: O(1)
         Arrays.sort(stalls);
         int len = stalls.length;
-        int  low = 1;
-        int high = stalls[len-1] - stalls[0];
+        int  low = 1;//lower bound
+        int high = stalls[len-1] - stalls[0];//upper bound(difference between [max - min])
         while(low <= high){
             int mid = (high - low)/2 + low;
-
             if(canPlaceCows(stalls, k, mid)){
                 low = mid + 1;
             }
@@ -26,11 +25,12 @@ public class aggressiveCows {
     private static boolean canPlaceCows(int[] stalls, int k, int diff){
         int cowCnt = 1, last = stalls[0], len = stalls.length;
         for(int i = 1 ; i < len ; i++){
+            //try to place all the cows with given difference
             if((stalls[i] - last) >= diff){
                 cowCnt++;
                 last = stalls[i];
             }
-            if(cowCnt == k){
+            if(cowCnt == k/*given cow count*/){
                 return true;
             }
         }
