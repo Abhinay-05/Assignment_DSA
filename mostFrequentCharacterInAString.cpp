@@ -17,7 +17,7 @@ Explanation: 't' and 'u' are the characters with the same frequency, but 't' is 
 class Solution {
     public char getMaxOccuringChar(String s) {
         // code here
-        TreeMap<Character, Integer> alphabets = new TreeMap<>();
+        HashMap<Character, Integer> alphabets = new HashMap<>();
         
         int len = s.length();
         for(int i = 0 ; i < len ; i++){
@@ -29,8 +29,9 @@ class Solution {
         int max = 0;
         char ans = 'a';
         for(Character ch : alphabets.keySet()){
-            if(alphabets.get(ch) > max){
-                max = alphabets.get(ch);
+            int freq = alphabets.get(ch);
+            if(freq > max || max == freq && ch < ans){
+                max = freq;
                 ans = ch;
             }
         }
