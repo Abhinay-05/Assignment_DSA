@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 /*
 268. Missing Number
 
@@ -30,22 +33,31 @@ All the numbers of nums are unique.
 Follow up: Could you implement a solution using only O(1) extra space complexity and O(n) runtime complexity?
 */
 
-class Solution {
-public:
     int missingNumber(vector<int>& nums) {
         int len = nums.size();
-        int count[len+1];
-        for(int i = 0 ; i < len+1 ; i++){
-            count[i] = 0;
+        int i = 0;
+        while(i < len){
+            if(nums[i] == i || nums[i] == len){
+                i++;
+            }
+            else{
+                swap(nums[i], nums[nums[i]]);
+            }
         }
-        for(int el : nums){
-            count[el]++;
-        }
-        for(int i = 0 ; i < len+1 ; i++){
-            if(count[i] == 0){
+        for(int i = 0 ; i < len ; i++){
+            if(nums[i] != i){
                 return i;
             }
         }
-        return -1;//no element
+        return len;
     }
-};
+    int main(){
+        vector<int> v = {3, 0, 1};
+        cout<<missingNumber(v);
+        
+        v = {0,1};
+        cout<<missingNumber(v);
+
+        v = {9,6,4,2,3,5,7,0,1};
+        cout<<missingNumber(v);
+    }
