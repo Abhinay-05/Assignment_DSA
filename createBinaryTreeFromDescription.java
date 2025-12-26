@@ -28,6 +28,9 @@ descriptions[i].length == 3
 The binary tree described by descriptions is valid.
 */
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -52,50 +55,47 @@ class Solution {
         for(int[] arr : descriptions){
             int parent = arr[0];//parent value
             int child = arr[1];//child value
-            int left = arr[2];//left child or right child
-            if(hash.containsKey(parent) && hash.containsKey(child)){//parent and child already exists
-                if(left == 1){
-                    hash.get(parent).left = hash.get(child);
-                }
-                else{
-                    hash.get(parent).right = hash.get(child);
-                }
+            boolean left = (arr[2] == 1) ? true : false;//left child or right child
+            boolean containsParent = hash.containsKey(parent);//does the HashMap contains parent
+            boolean containsChild = hash.containsKey(child);//does the HashMap contains child
+
+            TreeNode connectFrom;//parent Node
+            TreeNode connectTo;//child Node
+
+            if(containsParent && containsChild){//parent and child already exists
+                connectFrom = hash.get(parent);
+                connectTo = hash.get(child);
             }
-            else if(hash.containsKey(parent) && !hash.containsKey(child)){//only parent exists
-                TreeNode newChild = new TreeNode(child);
-                hash.put(child, newChild);
-                if(left == 1){
-                    hash.get(parent).left = newChild;
-                }
-                else{
-                    hash.get(parent).right = newChild;
-                }
+            else if(containsParent && !containsChild){//only parent exists
+                connectFrom = hash.get(parent);
+                connectTo = new TreeNode(child);
+
+                hash.put(child, connectTo);//update HashMap
             }
-            else if(hash.containsKey(child) && !hash.containsKey(parent)){//only child exists
-                TreeNode newParent = new TreeNode(parent);
-                hash.put(parent, newParent);
-                if(left == 1){
-                    newParent.left = hash.get(child);
-                }
-                else{
-                    newParent.right = hash.get(child);
-                }
+            else if(containsChild && !containsParent){//only child exists
+                connectFrom = new TreeNode(parent);
+                connectTo = hash.get(child);
+
+                hash.put(parent, connectFrom);//update HashMap
             }
             else{//neither parent nor child exists
-                TreeNode newChild = new TreeNode(child);
-                TreeNode newParent = new TreeNode(parent);
-                hash.put(child, newChild);
-                hash.put(parent, newParent);
-                if(left == 1){
-                    newParent.left = newChild;
-                }
-                else{
-                    newParent.right = newChild;
-                }
+                connectFrom = new TreeNode(parent);
+                connectTo = new TreeNode(child);
+                //update HashMap
+                hash.put(parent, connectFrom);
+                hash.put(child, connectTo);
+            }
+
+            if(left){
+                connectFrom.left = connectTo;
+            }
+            else{
+                connectFrom.right = connectTo;
             }
         }
+
         int root = findRoot(descriptions);//TC : O(N)
-        return hash.get(root);
+        return hash.get(root);//return root Node
     }
 
     private int findRoot(int[][] d){
