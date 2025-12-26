@@ -34,9 +34,6 @@ Constraints:
 0 <= key, value <= 106
 At most 104 calls will be made to put, get, and remove.
 */
-import java.util.ArrayList;
-import java.util.List;
-
 class MyHashMap {
 
     class CustomNode{
@@ -53,11 +50,11 @@ class MyHashMap {
 
     private CustomNode[] list; 
     public MyHashMap() {
-        list = new CustomNode[10];
+        list = new CustomNode[1000];
     }
     
     public void put(int key, int value) {
-        int hash = key % 10;
+        int hash = key % list.length;
 
         //current [hash] is NULL
         if(list[hash] == null){
@@ -84,7 +81,7 @@ class MyHashMap {
     }
     
     public int get(int key) {
-        int hash = key % 10;
+        int hash = key % list.length;
 
         CustomNode temp = list[hash];
         while(temp != null){
@@ -97,7 +94,7 @@ class MyHashMap {
     }
     
     public void remove(int key) {
-        int hash = key % 10;
+        int hash = key % list.length;
 
         if(list[hash] == null){
             //there is no value for the corresponding hashCode of the key
