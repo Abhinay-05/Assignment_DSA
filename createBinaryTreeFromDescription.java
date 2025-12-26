@@ -52,15 +52,15 @@ class Solution {
     //return root node
     public TreeNode createBinaryTree(int[][] descriptions) {
         HashMap<Integer, TreeNode> hash = new HashMap<>();//store every value in the HashMap
+
+            TreeNode connectFrom;//parent Node
+            TreeNode connectTo;//child Node
         for(int[] arr : descriptions){
             int parent = arr[0];//parent value
             int child = arr[1];//child value
             boolean left = (arr[2] == 1) ? true : false;//left child or right child
             boolean containsParent = hash.containsKey(parent);//does the HashMap contains parent
             boolean containsChild = hash.containsKey(child);//does the HashMap contains child
-
-            TreeNode connectFrom;//parent Node
-            TreeNode connectTo;//child Node
 
             if(containsParent && containsChild){//parent and child already exists
                 connectFrom = hash.get(parent);
