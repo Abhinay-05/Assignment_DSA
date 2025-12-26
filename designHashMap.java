@@ -33,64 +33,90 @@ myHashMap.get(2);    // return -1 (i.e., not found), The map is now [[1,1]]
 Constraints:
 0 <= key, value <= 106
 At most 104 calls will be made to put, get, and remove.
-*/import java.util.ArrayList;
+*/
+import java.util.ArrayList;
 import java.util.List;
 
 class MyHashMap {
-    List<Integer> K;
-    List<Integer> V;
+
+    class CustomNode{
+        int K;
+        int V;
+        CustomNode next;
+
+        CustomNode(int key, int value){
+            this.K = key;
+            this.V = value;
+            this.next = null;
+        }
+    }
+
+    private CustomNode[] list; 
     public MyHashMap() {
-        K = new ArrayList<>();
-        V = new ArrayList<>();
+        list = new CustomNode[10];
     }
     
     public void put(int key, int value) {
-        //TC: O(N)
-        int i = 0;
-        int len = K.size();
+        int hash = key % 10;
 
-        for( ; i < len ; i++){
-            if(K.get(i) == key){
-                break;
-            }
-        }
-        if(i < len){//(Key:Value) already exists in the DB
-            V.set(i, value);
+        //current [hash] is NULL
+        if(list[hash] == null){
+            list[hash] = new CustomNode(key, value);
             return;
         }
-        //(Key:Value) does not exist
-        K.add(key);
-        V.add(value);
+
+        //checking if it exists in the current [hash]
+        CustomNode temp = list[hash];
+        while(temp != null){
+            if(temp.K == key){
+                temp.V = value;
+                return;
+            }
+            temp = temp.next;
+        }
+
+        //add a new CustomNode to the end of the [hash]
+        temp = list[hash];
+        while(temp.next != null){
+            temp = temp.next;
+        }
+        temp.next = new CustomNode(key,value);
     }
     
     public int get(int key) {
-        int i = 0;
-        int len = K.size();
-        
-        for( ; i < len ; i++){
-            if(K.get(i) == key){
-                break;
+        int hash = key % 10;
+
+        CustomNode temp = list[hash];
+        while(temp != null){
+            if(temp.K == key){
+                return temp.V;
             }
+            temp = temp.next;
         }
-        if(i < len){
-            return V.get(i);//exists in the DB
-        }
-        return -1;// does not exist
+        return -1;//key does not exist
     }
     
     public void remove(int key) {
-        int i = 0;
-        int len = K.size();
+        int hash = key % 10;
 
-        for( ; i < len ; i++){
-            if(K.get(i) == key){
-                break;
-            }
+        if(list[hash] == null){
+            //there is no value for the corresponding hashCode of the key
+            return;
         }
 
-        if(i < len){//key exists in the array
-            K.remove(i);
-            V.remove(i);
+        CustomNode temp = list[hash];
+        if(temp.K == key){
+            //first element of the [hash] is the required key
+            list[hash] = temp.next;
+            return;
+        }
+
+        while(temp.next != null){
+            if(temp.next.K == key){
+                temp.next = temp.next.next;
+                return;
+            }
+            temp = temp.next;
         }
     }
 }
