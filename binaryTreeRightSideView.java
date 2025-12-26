@@ -24,6 +24,13 @@ The number of nodes in the tree is in the range [0, 100].
 -100 <= Node.val <= 100
 */
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import javax.swing.tree.TreeNode;
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -40,34 +47,27 @@ The number of nodes in the tree is in the range [0, 100].
  * }
  */
 class Solution {
-    //using BFS using a Queue
+    //using DFS
+    //TC : O(N)
+    //N -> number of nodes
+    //SC : O(H)
+    //H -> height of the tree
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> list = new ArrayList<>();
-        if(root == null){
-            return list;
-        }
-
-        Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-
-        TreeNode temp;
-        while(!q.isEmpty()){
-            int size = q.size();
-            int lastEl = 0;
-            
-            for(int i = 0 ; i < size ; i++){
-                temp = q.poll();
-                lastEl = temp.val;
-
-                if(temp.left != null){
-                    q.offer(temp.left);
-                }
-                if(temp.right != null){
-                    q.offer(temp.right);
-                }
-            }
-            list.add(lastEl);
-        }
+        rightView(root, 1, list);
         return list;
+    }
+
+    private void rightView(TreeNode node, int level, List<Integer> list){
+        if(node == null){
+            return;
+        }
+
+        if(level > list.size()){
+            list.add(node.val);
+        }
+
+        rightView(node.right, level+1, list);
+        rightView(node.left, level+1, list);
     }
 }
