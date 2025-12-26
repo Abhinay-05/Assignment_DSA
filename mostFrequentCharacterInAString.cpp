@@ -15,24 +15,25 @@ Explanation: 't' and 'u' are the characters with the same frequency, but 't' is 
 
 */ 
 class Solution {
-  public:
-    char getMaxOccuringChar(string& s) {
-        //  code here
-        int len = s.size();
-        int alphabets[26] = {0};
+    public char getMaxOccuringChar(String s) {
+        // code here
+        TreeMap<Character, Integer> alphabets = new TreeMap<>();
+        
+        int len = s.length();
         for(int i = 0 ; i < len ; i++){
-            char ch = s[i];
-            alphabets[ch - 97]++;
+            char ch = s.charAt(i);
+            int oldVal = alphabets.get(ch) == null ? 0 : alphabets.get(ch);
+            alphabets.put(ch, oldVal+1);
         }
-        int freq = 0;
-        int max = 25;
-        for(int i = 25 ; i >= 0 ; i--){
-            if(alphabets[i] >= freq){
-                max = i;
-                freq = alphabets[i];
+        
+        int max = 0;
+        char ans = 'a';
+        for(Character ch : alphabets.keySet()){
+            if(alphabets.get(ch) > max){
+                max = alphabets.get(ch);
+                ans = ch;
             }
         }
-        return (char)(97+max);
-    
+        return ans;
     }
-};
+}
